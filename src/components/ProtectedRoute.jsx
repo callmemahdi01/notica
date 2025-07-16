@@ -1,17 +1,15 @@
-// src/components/ProtectedRoute.jsx
-
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // استفاده از هوک سفارشی
+import { useAuth } from '../contexts/AuthContext';
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated, isLoading } = useAuth();
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
 
-  if (isLoading) {
-    return <div>در حال بارگذاری...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
-}
+  return user ? children : <Navigate to="/login" />;
+};
 
 export default ProtectedRoute;

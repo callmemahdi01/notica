@@ -1,17 +1,15 @@
-// src/components/GuestRoute.jsx
-
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext'; // استفاده از هوک سفارشی
+import { useAuth } from '../contexts/AuthContext';
 
-function GuestRoute({ children }) {
-  const { isAuthenticated, isLoading } = useAuth();
+const GuestRoute = ({ children }) => {
+  const { user, loading } = useAuth();
 
-  if (isLoading) {
-    return <div>در حال بارگذاری...</div>;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? <Navigate to="/" replace /> : children;
-}
+  return user ? <Navigate to="/" /> : children;
+};
 
 export default GuestRoute;

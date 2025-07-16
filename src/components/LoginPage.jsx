@@ -1,37 +1,24 @@
-// src/components/LoginPage.jsx
-
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
 
-function LoginPage() {
-  const [studentId, setStudentId] = useState('');
+const LoginPage = () => {
+  const [student_id, setStudentId] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setIsLoading(true);
     try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ studentId: studentId.trim(), password }),
-      });
-
-      if (response.ok) {
-        login();
-        navigate('/');
-      } else {
-        const errorData = await response.json().catch(() => ({ error: 'خطای ناشناخته' }));
-        alert(errorData.error);
-      }
+      await login(student_id, password);
+      navigate('/');
     } catch (err) {
-      console.error(err);
-      alert('خطا در ارتباط با سرور');
+      setError('Failed to log in');
     } finally {
       setIsLoading(false);
     }
@@ -39,35 +26,32 @@ function LoginPage() {
 
   return (
     <div className="login-container">
-      <div className="login-form">
-        <h2>ورود به حساب نوتیکا</h2>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="شماره دانشجویی"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-          <input
-            type="password"
-            placeholder="رمز عبور"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={isLoading}
-          />
-          <button type="submit" disabled={isLoading}>
-            {isLoading ? <div className="spinner-button"></div> : 'ورود'}
-          </button>
-        </form>
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
+        {error && <p className="error">{error}</p>}
+        <input
+          type="text"
+          placeholder="Student ID"
+          value={student_id}
+          onChange={(e) => setStudentId(e.target.value)}
+          disabled={isLoading}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+        />
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? <div className="spinner-button"></div> : 'Login'}
+        </button>
         <p className="form-switch">
-          حساب کاربری ندارید؟ <Link to="/signup">ثبت‌نام کنید</Link>
+          Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
-      </div>
+      </form>
     </div>
   );
-}
+};
 
 export default LoginPage;

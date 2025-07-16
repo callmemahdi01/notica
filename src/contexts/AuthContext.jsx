@@ -1,63 +1,72 @@
-// src/contexts/AuthContext.jsx
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { useNavigate } 'react-router-dom';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null); // وضعیت جدید برای نگهداری اطلاعات کاربر
-  const [isLoading, setIsLoading] = useState(true);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const checkAuthStatus = async () => {
+  const login = async (student_id, password) => {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ student_id, password }),
+    });
+
+    if (response.ok) {
+      await fetchUser();
+    } else {
+      throw new Error('Login failed');
+    }
+  };
+
+  const signup = async (student_id, password, name) => {
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ student_id, password, name }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Signup failed');
+    }
+  };
+
+  const logout = async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    setUser(null);
+    navigate('/login');
+  };
+
+  const fetchUser = async () => {
     try {
-      const response = await fetch('/api/auth', { credentials: 'include' });
-      const data = await response.json();
-      if (response.ok && data.isAuthenticated) {
-        setIsAuthenticated(true);
-        setUser(data.user); // ذخیره کردن اطلاعات کاربر
+      const response = await fetch('/api/auth');
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data);
       } else {
-        setIsAuthenticated(false);
         setUser(null);
       }
     } catch (error) {
-      setIsAuthenticated(false);
       setUser(null);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    checkAuthStatus();
+    fetchUser();
   }, []);
 
-  const login = async () => {
-    // پس از لاگین موفق، وضعیت را به‌روز می‌کنیم
-    await checkAuthStatus();
-  };
-
-  const logout = async () => {
-    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
-    setIsAuthenticated(false);
-    setUser(null);
-  };
-
-  const value = {
-    isAuthenticated,
-    isLoading,
-    user, // ارائه اطلاعات کاربر به کامپوننت‌ها
-    login,
-    logout,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
-      {!isLoading && children}
+    <AuthContext.Provider value={{ user, loading, login, logout, signup }}>
+      {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   return useContext(AuthContext);
-}
+};

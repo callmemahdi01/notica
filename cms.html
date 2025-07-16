@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ابزار ساخت جزوه نوتیکا</title>
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+        .container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+        h1, h2 {
+            color: #005a9c;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .course-card {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .note-item {
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            font-family: monospace;
+            direction: ltr;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            white-space: pre;
+        }
+        .output-container {
+            width: 50%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>ابزار مدیریت دروس و جزوات</h1>
+
+        <div id="add-course-section">
+            <h2>۱. افزودن درس جدید</h2>
+            <div class="input-group">
+                <label for="course-id">شناسه درس (انگلیسی، مثلا: pharma):</label>
+                <input type="text" id="course-id" placeholder="pharma">
+            </div>
+            <div class="input-group">
+                <label for="course-name">نام درس (فارسی):</label>
+                <input type="text" id="course-name" placeholder="فارماکولوژی پایاترم">
+            </div>
+            <button onclick="addCourse()">افزودن درس</button>
+        </div>
+
+        <div id="courses-list">
+            </div>
+
+        <hr style="margin: 30px 0;">
+
+        <button onclick="generateCode()" style="background-color: #28a745; width: 100%; padding: 15px;">تولید کد نهایی</button>
+
+    </div>
+
+    <div class="output-container">
+        <h2>خروجی courses.json</h2>
+        <textarea id="json-output" readonly></textarea>
+
+        <h2>خروجی notes/index.js</h2>
+        <textarea id="js-output" readonly></textarea>
+    </div>
+
+<script>
+    let courses = [];
+
+    function addCourse() {
+        const courseIdInput = document.getElementById('course-id');
+        const courseNameInput = document.getElementById('course-name');
+        const courseId = courseIdInput.value.trim();
+        const courseName = courseNameInput.value.trim();
+
+        if (!courseId || !courseName) {
+            alert('شناسه و نام درس نمی‌تواند خالی باشد.');
+            return;
+        }
+
+        if (courses.some(c => c.id === courseId)) {
+            alert('درسی با این شناسه قبلاً اضافه شده است.');
+            return;
+        }
+
+        const newCourse = {
+            id: courseId,
+            name: courseName,
+            notes: []
+        };
+        courses.push(newCourse);
+        renderCourses();
+        courseIdInput.value = '';
+        courseNameInput.value = '';
+    }
+
+    function addNote(courseId) {
+        const noteIdInput = document.getElementById(`note-id-${courseId}`);
+        const noteTitleInput = document.getElementById(`note-title-${courseId}`);
+        const noteId = noteIdInput.value.trim();
+        const noteTitle = noteTitleInput.value.trim();
+
+        if (!noteId || !noteTitle) {
+            alert('شناسه و عنوان جزوه نمی‌تواند خالی باشد.');
+            return;
+        }
+
+        const course = courses.find(c => c.id === courseId);
+        if (course.notes.some(n => n.id === noteId)) {
+            alert('جزوه‌ای با این شناسه در این درس وجود دارد.');
+            return;
+        }
+
+        course.notes.push({ id: noteId, title: noteTitle });
+        renderCourses();
+    }
+
+    function renderCourses() {
+        const coursesListDiv = document.getElementById('courses-list');
+        coursesListDiv.innerHTML = '<h2>لیست دروس فعلی:</h2>';
+
+        courses.forEach(course => {
+            const card = document.createElement('div');
+            card.className = 'course-card';
+            let notesHtml = '';
+            course.notes.forEach(note => {
+                notesHtml += `<div class="note-item"><strong>${note.title}</strong> (id: ${note.id})</div>`;
+            });
+
+            card.innerHTML = `
+                <h3>${course.name} (id: ${course.id})</h3>
+                <div id="notes-for-${course.id}">${notesHtml}</div>
+                <hr>
+                <h4>افزودن جزوه جدید به این درس:</h4>
+                <div class="input-group">
+                    <label>شناسه جزوه (مثلا: 7):</label>
+                    <input type="text" id="note-id-${course.id}">
+                </div>
+                <div class="input-group">
+                    <label>عنوان جزوه (مثلا: جلسه 7):</label>
+                    <input type="text" id="note-title-${course.id}">
+                </div>
+                <button onclick="addNote('${course.id}')">افزودن جزوه</button>
+            `;
+            coursesListDiv.appendChild(card);
+        });
+    }
+
+    function generateCode() {
+        if (courses.length === 0) {
+            alert('ابتدا حداقل یک درس اضافه کنید.');
+            return;
+        }
+
+        // Generate JSON output
+        const jsonOutput = JSON.stringify(courses, null, 2);
+        document.getElementById('json-output').value = jsonOutput;
+
+        // Generate JS output
+        let imports = `// notes/index.js\n\n// محتوای فایل‌های HTML به صورت متن خام وارد می‌شود\n`;
+        let notesObject = 'export const notes = {\n';
+
+        courses.forEach(course => {
+            course.notes.forEach(note => {
+                const varName = `${course.id}${note.id}`;
+                imports += `import ${varName} from './${course.id}/${note.id}.html';\n`;
+                notesObject += `  '${course.id}/${note.id}': ${varName},\n`;
+            });
+        });
+        
+        imports += '\n// یک آبجکت برای دسترسی آسان به هر جزوه می‌سازیم\n';
+        notesObject += '};';
+
+        document.getElementById('js-output').value = imports + notesObject;
+    }
+</script>
+
+</body>
+</html>

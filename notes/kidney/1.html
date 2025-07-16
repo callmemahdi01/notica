@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جزوات کورس کلیه</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #4a5568;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .announcement-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3); }
+            to { box-shadow: 0 15px 30px rgba(240, 147, 251, 0.5); }
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature {
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .feature-text {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .loading-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .loading-progress {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0;
+            border-radius: 4px;
+            animation: loading 3s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% { width: 0; }
+            50% { width: 70%; }
+            100% { width: 0; }
+        }
+        
+        .contact-info {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-right: 4px solid #667eea;
+        }
+        
+        .contact-info h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <i class="fas fa-book-medical"></i>
+        </div>
+        
+        <h1>جزوات کورس کلیه</h1>
+        
+        <p class="subtitle">
+            منابع آموزشی جامع و کاربردی برای مطالعه بیماری‌های کلیه
+        </p>
+        
+        <div class="announcement-box">
+            <i class="fas fa-upload"></i>
+            جزوات کورس کلیه به زودی در اینجا آپلود می‌شود
+        </div>
+        
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        
+    </div>
+</body>
+</html>

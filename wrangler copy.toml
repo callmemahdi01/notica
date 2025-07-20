@@ -1,10 +1,14 @@
 name = "notica"
 pages_build_output_dir = "dist"
 
+[[build.rules]]
+type = "Text"
+globs = ["**/*.html"]
+
 [[d1_databases]]
 binding = "notica_db"
-database_name = "notica_db"
 database_id = "0d2107fc-5a5d-4db8-a211-8c0704268cd4"
+database_name = "notica_db"
 
 [[kv_namespaces]]
 binding = "NOTICA_KV"

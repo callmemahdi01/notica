@@ -1,3 +1,5 @@
+// nladsn/notes/index.js
+
 // محتوای فایل‌های HTML به صورت متن خام وارد می‌شود
 import pharma7 from './pharma/7.html';
 import pharma8 from './pharma/8.html';

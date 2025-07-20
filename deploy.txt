@@ -1,0 +1,3 @@
+npm run build
+wrangler pages deploy dist
+npx wrangler pages dev --local

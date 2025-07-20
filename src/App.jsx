@@ -1,6 +1,4 @@
-// src/App.jsx
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 
@@ -8,46 +6,28 @@ function App() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [courses, setCourses] = useState([]);
-
-  // --- شروع تغییرات برای LocalStorage ---
-
-  // 1. خواندن آخرین وضعیت از localStorage هنگام بارگذاری اولیه
-  const [selectedCourseId, setSelectedCourseId] = useState(
-    () => localStorage.getItem('lastCourseId') || null
-  );
-  const [selectedNotePath, setSelectedNotePath] = useState(
-    () => localStorage.getItem('lastNotePath') || ''
-  );
-
-  // --- پایان تغییرات برای LocalStorage ---
-
+  const [selectedCourseId, setSelectedCourseId] = useState(() => localStorage.getItem('lastCourseId') || null);
+  const [selectedNotePath, setSelectedNotePath] = useState(() => localStorage.getItem('lastNotePath') || '');
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isIframeLoading, setIframeLoading] = useState(false);
-  const iframeContainerRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const iframeContainerRef = useRef(null);
 
-  // دریافت لیست دروس
   useEffect(() => {
     fetch('/courses.json')
       .then(response => response.json())
-      .then(data => setCourses(data))
+      .then(setCourses)
       .catch(error => console.error('Error fetching courses:', error));
   }, []);
 
-
-  // --- شروع تغییرات برای LocalStorage ---
-
-  // 2. ذخیره شناسه درس در localStorage هر زمان که تغییر کند
   useEffect(() => {
     if (selectedCourseId) {
       localStorage.setItem('lastCourseId', selectedCourseId);
     } else {
-      // اگر هیچ درسی انتخاب نشده بود، از localStorage پاک شود
       localStorage.removeItem('lastCourseId');
     }
   }, [selectedCourseId]);
 
-  // 3. ذخیره مسیر جزوه در localStorage هر زمان که تغییر کند
   useEffect(() => {
     if (selectedNotePath) {
       localStorage.setItem('lastNotePath', selectedNotePath);
@@ -56,70 +36,52 @@ function App() {
     }
   }, [selectedNotePath]);
 
-  // --- پایان تغییرات برای LocalStorage ---
-
-
   const handleCourseClick = (courseId) => {
     const newCourseId = selectedCourseId === courseId ? null : courseId;
     setSelectedCourseId(newCourseId);
-    // اگر کاربر یک درس باز را می‌بندد، جزوه انتخاب شده را نیز پاک می‌کنیم
     if (!newCourseId) {
-        setSelectedNotePath('');
+      setSelectedNotePath('');
     }
   };
 
   const handleNoteClick = (courseId, noteId) => {
     const path = `/notes/${courseId}/${noteId}`;
     if (selectedNotePath !== path) {
-        setSelectedNotePath(path);
-        setIframeLoading(true);
+      setSelectedNotePath(path);
+      setIframeLoading(true);
     }
     if (window.innerWidth <= 768) {
       setSidebarOpen(false);
     }
   };
 
-  const handleIframeLoad = () => {
-    setIframeLoading(false);
-  };
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  const handleIframeLoad = () => setIframeLoading(false);
+  const toggleSidebar = () => setSidebarOpen(prev => !prev);
 
   const handleLogout = async () => {
-    // پاک کردن localStorage هنگام خروج
     localStorage.removeItem('lastCourseId');
     localStorage.removeItem('lastNotePath');
     await logout();
     navigate('/login');
   };
 
-  const toggleFrameFullscreen = () => {
-    if (!iframeContainerRef.current) return;
+  const toggleFrameFullscreen = useCallback(() => {
+    const container = iframeContainerRef.current;
+    if (!container) return;
+
     if (!document.fullscreenElement) {
-      iframeContainerRef.current.requestFullscreen().catch(err => {
+      container.requestFullscreen().catch(err => {
         alert(`Error enabling full-screen mode: ${err.message}`);
       });
     } else {
       document.exitFullscreen();
     }
-  };
-
-  useEffect(() => {
-    const onFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) setSidebarOpen(false);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
   }, []);
 
   return (
@@ -130,7 +92,7 @@ function App() {
         <div className="sidebar-header">
           <h1>نوتیکا</h1>
         </div>
-        {user && ( <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-900 text-center mb-5"> {user.name} </h3> )}
+        {user && <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-900 text-center mb-5">{user.name}</h3>}
         <button onClick={handleLogout} className="logout-button">خروج از حساب</button>
         <h2 className="course-list-title">لیست دروس</h2>
         <ul className="course-list">
@@ -157,7 +119,6 @@ function App() {
 
       <div className="content">
         <button className="sidebar-open-button" onClick={toggleSidebar}>&#9776;</button>
-
         <div className="iframe-container" ref={iframeContainerRef}>
           {isIframeLoading && selectedNotePath && (
             <div className="spinner-container">

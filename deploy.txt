@@ -1,3 +1,4 @@
 npm run build
 wrangler pages deploy dist
 npx wrangler pages dev --local
+npx wrangler d1 execute notica_db --local --file=./db/schema.sql

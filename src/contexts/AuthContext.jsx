@@ -1,12 +1,10 @@
-// src/contexts/AuthContext.jsx
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null); // وضعیت جدید برای نگهداری اطلاعات کاربر
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const checkAuthStatus = async () => {
@@ -15,7 +13,7 @@ export function AuthProvider({ children }) {
       const data = await response.json();
       if (response.ok && data.isAuthenticated) {
         setIsAuthenticated(true);
-        setUser(data.user); // ذخیره کردن اطلاعات کاربر
+        setUser(data.user);
       } else {
         setIsAuthenticated(false);
         setUser(null);
@@ -33,7 +31,6 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async () => {
-    // پس از لاگین موفق، وضعیت را به‌روز می‌کنیم
     await checkAuthStatus();
   };
 
@@ -46,7 +43,7 @@ export function AuthProvider({ children }) {
   const value = {
     isAuthenticated,
     isLoading,
-    user, // ارائه اطلاعات کاربر به کامپوننت‌ها
+    user,
     login,
     logout,
   };

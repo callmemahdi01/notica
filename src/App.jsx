@@ -92,7 +92,12 @@ function App() {
         <div className="sidebar-header">
           <h1>نوتیکا</h1>
         </div>
-        {user && <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-900 text-center mb-5">{user.name}</h3>}
+        {user && (
+          <div className="text-center mb-5">
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-900">{user.name}</h3>
+            {user.studentId && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{user.studentId}</p>}
+          </div>
+        )}
         <button onClick={handleLogout} className="logout-button">خروج از حساب</button>
         <h2 className="course-list-title">لیست دروس</h2>
         <ul className="course-list">

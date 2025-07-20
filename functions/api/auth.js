@@ -21,8 +21,7 @@ export async function onRequestGet(context) {
             issuer: 'notica-auth',
         });
 
-        // حالا به جای "OK"، اطلاعات کاربر را برمی‌گردانیم
-        return new Response(JSON.stringify({ isAuthenticated: true, user: { name: payload.name } }), {
+        return new Response(JSON.stringify({ isAuthenticated: true, user: { name: payload.name, studentId: payload.sub } }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

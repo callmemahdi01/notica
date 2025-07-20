@@ -10,29 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        // این بخش جدید، وظیفه کش کردن جزوات را بر عهده دارد
-        runtimeCaching: [
-          {
-            // هر درخواستی که با آدرس /notes/ شروع شود را شناسایی می‌کند
-            urlPattern: /^\/notes\//,
-            // از استراتژی "اول حافظه پنهان" (CacheFirst) استفاده می‌کند
-            handler: 'CacheFirst',
-            options: {
-              // یک نام منحصر به فرد برای کش جزوات
-              cacheName: 'notica-notes-cache',
-              expiration: {
-                // حداکثر ۵۰ جزوه در حافظه پنهان نگهداری می‌شود
-                maxEntries: 10,
-                // هر جزوه به مدت ۳۰ روز در حافظه پنهان باقی می‌ماند
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 روز
-              },
-              cacheableResponse: {
-                // فقط پاسخ‌های موفق (status: 200) را کش می‌کند
-                statuses: [200],
-              },
-            },
-          },
-        ],
+        navigateFallbackDenylist: [/^\/notes\//],
       },
       manifest: {
         name: 'Notica',

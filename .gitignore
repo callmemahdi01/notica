@@ -22,3 +22,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.wrangler/state/v3/d1/miniflare-D1DatabaseObject/f23d8e7237ec0556a47f29f81721998964ac56ef81b07beec4f27967b7aa511e.sqlite

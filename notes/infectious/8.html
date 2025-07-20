@@ -25,7 +25,7 @@
     <script src="https://callmemahdi01.github.io/js/note.js" defer></script>
 
 </head>
-<body>
+<body ondragstart="return false" ondrop="return false">
     <div class="container">
         <header>
             <h1>عفونت‌های بیمارستانی و احتیاط‌های استاندارد</h1>
@@ -145,5 +145,6 @@
             </ol>
         </section>
     </div>
+    <script> document.addEventListener('DOMContentLoaded', () => { const blockEvents = (e) => e.preventDefault(); document.addEventListener('contextmenu', blockEvents); document.addEventListener('selectstart', blockEvents); document.addEventListener('dragstart', blockEvents); document.addEventListener('drop', blockEvents); document.addEventListener('copy', blockEvents); document.addEventListener('cut', blockEvents); document.addEventListener('paste', blockEvents); document.addEventListener('keydown', (e) => { if ( (e.ctrlKey && ['c', 'x', 'v', 'u', 's'].includes(e.key.toLowerCase())) || (e.key === 'F12') ) { e.preventDefault(); } }); }); </script>
 </body>
 </html>

@@ -24,7 +24,7 @@
     <script src="https://callmemahdi01.github.io/js/scrollbar.js" defer></script>
     <script src="https://callmemahdi01.github.io/js/note.js" defer></script>
 
-<body>
+<body ondragstart="return false" ondrop="return false">
     <div class="container">
         <header>
             <h1>لنفادنوپاتی (Lymphadenopathy)</h1>
@@ -97,7 +97,7 @@
                     <li>غدد لنفاوی کوچک (زیر ۱ سانتی‌متر) در نواحی زیر بغل یا کشاله ران نیز معمولاً طبیعی تلقی می‌شوند.</li>
                 </ul>
             </div>
-             <p>[در این قسمت تصاویری از لنف نود طبیعی و هایپرپلاستیک وجود داشت.]</p>
+             
         </section>
 
         <section>
@@ -199,5 +199,6 @@
             </div>
         </section>
     </div>
+    <script> document.addEventListener('DOMContentLoaded', () => { const blockEvents = (e) => e.preventDefault(); document.addEventListener('contextmenu', blockEvents); document.addEventListener('selectstart', blockEvents); document.addEventListener('dragstart', blockEvents); document.addEventListener('drop', blockEvents); document.addEventListener('copy', blockEvents); document.addEventListener('cut', blockEvents); document.addEventListener('paste', blockEvents); document.addEventListener('keydown', (e) => { if ( (e.ctrlKey && ['c', 'x', 'v', 'u', 's'].includes(e.key.toLowerCase())) || (e.key === 'F12') ) { e.preventDefault(); } }); }); </script>
 </body>
 </html>

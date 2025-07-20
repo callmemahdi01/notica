@@ -25,7 +25,7 @@
     <script src="https://callmemahdi01.github.io/js/note.js" defer></script>
 
 </head>
-<body>
+<body ondragstart="return false" ondrop="return false">
     <div class="container">
         <header>
             <h1>تب و بثورات جلدی (Fever and Rash)</h1>
@@ -72,19 +72,19 @@
             
             <h4>ماکول (Macule)</h4>
             <p>تغییر رنگ پوست یا مخاط <strong>بدون تغییر در سطح</strong> (مسطح و غیرقابل لمس) که اندازه‌ای کمتر از ۰.۵ تا ۱ سانتی‌متر دارد. این ضایعات موقتی هستند و با بهبودی بیماری از بین می‌روند.</p>
-            <p>[در این قسمت تصویری از یک ضایعه ماکول وجود داشت.]</p>
+            
             
             <h4>پچ (Patch)</h4>
             <p>یک ماکول با اندازه‌ای بزرگتر از ۰.۵ سانتی‌متر.</p>
-            <p>[در این قسمت تصویری از یک ضایعه پچ وجود داشت.]</p>
+            
             
             <h4>پاپول (Papule)</h4>
             <p>یک ضایعه <strong>جامد و برجسته</strong> با قطر کمتر از ۰.۵ سانتی‌متر.</p>
-            <p>[در این قسمت تصویری از ضایعات پاپول وجود داشت.]</p>
+            
             
             <h4>ندول (Nodule)</h4>
             <p>شبیه به پاپول است اما <strong>عمق بیشتری</strong> دارد و تا لایه‌های درم یا زیرپوستی نفوذ می‌کند. وجه تمایز آن با پاپول، عمق آن است نه اندازه. ندول‌ها در بیماری‌های عفونی (مانند سل) و غیرعفونی (مانند آرتریت روماتوئید) دیده می‌شوند.</p>
-            <p>[در این قسمت تصویری از یک ضایعه ندول وجود داشت.]</p>
+            
 
             <h4>پوسچول (Pustule) و وزیکول (Vesicle)</h4>
             <p>ضایعاتی برجسته و حاوی مایع.</p>
@@ -92,11 +92,11 @@
                 <li><strong>پوسچول:</strong> حاوی مایع چرکی (Purulent) است.</li>
                 <li><strong>وزیکول:</strong> حاوی مایع شفاف (سروز) است و اندازه‌ای کمتر از ۰.۵ سانتی‌متر دارد.</li>
             </ul>
-             <p>[در این قسمت تصاویری از ضایعات پوسچول و وزیکول وجود داشت.]</p>
+             
 
             <h4>بولا (Bulla)</h4>
             <p>یک وزیکول با اندازه بزرگتر از ۰.۵ سانتی‌متر. معمولاً در محل سوختگی‌ها دیده می‌شود.</p>
-            <p>[در این قسمت تصویری از یک ضایعه بولا وجود داشت.]</p>
+            
 
             <div class="important-questions">
                 <h4>پتشی (Petechiae) و پورپورا (Purpura)</h4>
@@ -106,11 +106,11 @@
                     <li><strong>پورپورا:</strong> ضایعات با اندازه بیشتر از ۱ سانتی‌متر.</li>
                     <li><strong>اکیموز (Ecchymosis):</strong> پورپورای بسیار بزرگ یا همان کبودی.</li>
                 </ul>
-                <p>[در این قسمت تصویری از ضایعات پتشی و پورپورا وجود داشت.]</p>
+                
             </div>
              <h4>پلاک (Plaque)</h4>
             <p>یک ضایعه برجسته، قابل لمس و وسیع با قطر بیشتر از ۱۰ میلی‌متر. این ضایعه بیشتر در بیماری‌های غیرعفونی مانند پسوریازیس دیده می‌شود.</p>
-             <p>[در این قسمت تصویری از یک ضایعه پلاک وجود داشت.]</p>
+             
         </section>
 
         <section>
@@ -160,5 +160,6 @@
         </section>
 
     </div>
+    <script> document.addEventListener('DOMContentLoaded', () => { const blockEvents = (e) => e.preventDefault(); document.addEventListener('contextmenu', blockEvents); document.addEventListener('selectstart', blockEvents); document.addEventListener('dragstart', blockEvents); document.addEventListener('drop', blockEvents); document.addEventListener('copy', blockEvents); document.addEventListener('cut', blockEvents); document.addEventListener('paste', blockEvents); document.addEventListener('keydown', (e) => { if ( (e.ctrlKey && ['c', 'x', 'v', 'u', 's'].includes(e.key.toLowerCase())) || (e.key === 'F12') ) { e.preventDefault(); } }); }); </script>
 </body>
 </html>

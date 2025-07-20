@@ -93,7 +93,7 @@ function App() {
           <h1>نوتیکا</h1>
         </div>
         {user && (
-          <div className="text-center mb-5">
+          <div className="flex flex-wrap justify-center items-center gap-3 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg p-3">
             <h3 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-900">{user.name}</h3>
             {user.studentId && <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{user.studentId}</p>}
           </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthProvider } from './contexts/AuthContext';
@@ -8,8 +8,9 @@ import LoginPage from './components/LoginPage.jsx';
 import SignupPage from './components/SignupPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import GuestRoute from './components/GuestRoute.jsx';
-import NotFoundPage from './components/NotFoundPage.jsx';
 import './style.css';
+
+const NotFoundPage = lazy(() => import('./components/NotFoundPage.jsx'));
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,13 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <ProtectedRoute><NotFoundPage /></ProtectedRoute>,
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>loading ...</div>}>
+          <NotFoundPage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
   }
 ]);
 

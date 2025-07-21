@@ -12,25 +12,19 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/notes\//],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => url.pathname.startsWith('/courses.json'),
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'api-cache',
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
             urlPattern: ({ url }) => {
-              return url.hostname === 'callmemahdi01.github.io' || url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || url.hostname === 'payment.ryzencloud910.workers.dev' || url.hostname === 'cdn.tailwindcss.com';
+              return url.hostname === 'callmemahdi01.github.io' ||
+                     url.hostname === 'fonts.googleapis.com' ||
+                     url.hostname === 'fonts.gstatic.com' ||
+                     url.hostname === 'payment.ryzencloud910.workers.dev' ||
+                     url.hostname === 'cdn.tailwindcss.com';
             },
             handler: 'CacheFirst',
             options: {
               cacheName: 'cdn-assets-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 day
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 روز
               },
               cacheableResponse: {
                 statuses: [0, 200],

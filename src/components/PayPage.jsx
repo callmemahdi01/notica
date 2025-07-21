@@ -43,7 +43,7 @@ function PayPage() {
 
   if (showPaymentFrame) {
     return (
-      <div className="payment-frame-container flex justify-center items-center min-h-screen bg-gray-800 bg-opacity-75 fixed inset-0 z-50">
+      <div className="flex justify-center items-center min-h-screen fixed inset-0 z-50 login-container">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-lg relative">
             <iframe
                 src={paymentUrl}

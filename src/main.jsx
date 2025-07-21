@@ -7,10 +7,10 @@ import LoginPage from './components/LoginPage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import GuestRoute from './components/GuestRoute.jsx'
 import './style.css'
+import PayPage from './components/PayPage.jsx';
+import SignupPage from './components/SignupPage.jsx';
 
-const SignupPage = lazy(() => import('./components/SignupPage.jsx'))
 const NotFoundPage = lazy(() => import('./components/NotFoundPage.jsx'))
-const PayPage = lazy(() => import('./components/PayPage.jsx'))
 
 const withSuspense = (element) => (
   <Suspense fallback={<div>در حال بارگذاری...</div>}>

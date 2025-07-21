@@ -44,7 +44,11 @@ function App() {
     }
   };
 
-  const handleNoteClick = (courseId, noteId) => {
+  const handleNoteClick = (courseId, noteId, isLocked) => {
+    if (isLocked) {
+      navigate('/pay');
+      return;
+    }
     const path = `/notes/${courseId}/${noteId}`;
     if (selectedNotePath !== path) {
       setSelectedNotePath(path);
@@ -113,7 +117,7 @@ function App() {
                   return (
                     <li
                       key={note.id}
-                      onClick={() => !isLocked && handleNoteClick(course.id, note.id)}
+                      onClick={() => handleNoteClick(course.id, note.id, isLocked)}
                       className={`${selectedNotePath === `/notes/${course.id}/${note.id}` ? 'active-note' : ''} ${isLocked ? 'locked-note' : ''}`}
                       title={isLocked ? 'برای دسترسی به این جزوه، اشتراک خود را ارتقا دهید' : ''}
                     >

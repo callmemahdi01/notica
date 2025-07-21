@@ -27,6 +27,10 @@ const router = createBrowserRouter([
     element: <GuestRoute><SignupPage /></GuestRoute>,
   },
   {
+    path: "/pay",
+    element: <ProtectedRoute><PayPage /></ProtectedRoute>,
+  },
+  {
     path: "*",
     element: (
       <ProtectedRoute>

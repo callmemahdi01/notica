@@ -1,8 +1,10 @@
-CREATE TABLE IF NOT EXISTS users (
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   full_name TEXT NOT NULL,
   student_id TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
   phone_number TEXT,
-  session_id TEXT
+  session_id TEXT,
+  subscription_type TEXT NOT NULL DEFAULT 'free'
 );

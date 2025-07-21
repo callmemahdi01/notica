@@ -107,15 +107,21 @@ function App() {
                 {course.name}
               </h3>
               <ul className="note-list">
-                {course.notes.map((note) => (
-                  <li
-                    key={note.id}
-                    onClick={() => handleNoteClick(course.id, note.id)}
-                    className={selectedNotePath === `/notes/${course.id}/${note.id}` ? 'active-note' : ''}
-                  >
-                    {note.title}
-                  </li>
-                ))}
+                {course.notes.map((note) => {
+                  const isFreeNote = ['1', '2', '3'].includes(note.id);
+                  const isLocked = user?.subscription === 'free' && !isFreeNote;
+                  return (
+                    <li
+                      key={note.id}
+                      onClick={() => !isLocked && handleNoteClick(course.id, note.id)}
+                      className={`${selectedNotePath === `/notes/${course.id}/${note.id}` ? 'active-note' : ''} ${isLocked ? 'locked-note' : ''}`}
+                      title={isLocked ? 'برای دسترسی به این جزوه، اشتراک خود را ارتقا دهید' : ''}
+                    >
+                      <span>{note.title}</span>
+                      {isLocked && <span className="lock-icon">🔒</span>}
+                    </li>
+                  );
+                })}
               </ul>
             </li>
           ))}

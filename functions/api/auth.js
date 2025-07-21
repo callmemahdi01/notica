@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose';
 export async function onRequestGet(context) {
     const { request, env } = context;
 
-    if (!env.JWT_SECRET) {
+    if (!env.JWT_SECRET || !env.notica_db) {
         return new Response(JSON.stringify({ error: "Server configuration error" }), { status: 500 });
     }
 
@@ -21,7 +21,21 @@ export async function onRequestGet(context) {
             issuer: 'notica-auth',
         });
 
-        return new Response(JSON.stringify({ isAuthenticated: true, user: { name: payload.name, studentId: payload.sub } }), {
+        const userFromDb = await env.notica_db
+            .prepare('SELECT subscription_type FROM users WHERE student_id = ?')
+            .bind(payload.sub)
+            .first();
+
+        const subscriptionType = userFromDb ? userFromDb.subscription_type : 'free';
+
+        return new Response(JSON.stringify({
+            isAuthenticated: true,
+            user: {
+                name: payload.name,
+                studentId: payload.sub,
+                subscription: subscriptionType
+            }
+        }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

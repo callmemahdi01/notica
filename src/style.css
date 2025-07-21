@@ -763,3 +763,39 @@ body {
 img, iframe, a, div {
   -webkit-user-drag: none;
 }
+
+/* Add these styles to the end of src/style.css */
+.note-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adds a small space between title and icon */
+}
+
+.note-list li > span:first-child {
+  flex-grow: 1; /* Allows the title to take up available space */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.locked-note {
+  color: var(--text-color-muted);
+  background: var(--border-color-light);
+  cursor: not-allowed;
+  opacity: 0.7; /* Makes it look more disabled */
+  transition: none; /* Disables hover effects */
+}
+
+.locked-note:hover {
+  background: var(--border-color-light);
+  color: var(--text-color-muted);
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.lock-icon {
+  font-size: 1rem;
+  color: var(--text-color-light);
+  flex-shrink: 0; /* Prevents the icon from shrinking */
+}

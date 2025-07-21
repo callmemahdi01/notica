@@ -10,13 +10,13 @@ async function hashPassword(password) {
 
 function validateInput(data) {
     const { fullName, studentId, password, phoneNumber } = data;
-    if (!fullName || !studentId || !password) 
+    if (!fullName || !studentId || !password)
         return 'فیلدهای نام کامل، شماره دانشجویی و رمز عبور اجباری هستند.';
-    if (password.length < 4) 
+    if (password.length < 4)
         return 'رمز عبور باید حداقل ۴ کاراکتر باشد.';
-    if (!/^\d+$/.test(studentId)) 
+    if (!/^\d+$/.test(studentId))
         return 'شماره دانشجویی فقط می‌تواند شامل اعداد باشد.';
-    if (phoneNumber && !/^09\d{9}$/.test(phoneNumber)) 
+    if (phoneNumber && !/^09\d{9}$/.test(phoneNumber))
         return 'فرمت شماره تلفن صحیح نیست.';
     return null;
 }
@@ -26,7 +26,7 @@ export async function onRequestPost(context) {
 
     if (!env.notica_db) {
         return new Response(
-            JSON.stringify({ error: 'اتصال به دیتابیس (notica_db) برقرار نشد.' }), 
+            JSON.stringify({ error: 'اتصال به دیتابیس (notica_db) برقرار نشد.' }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
@@ -38,7 +38,7 @@ export async function onRequestPost(context) {
         const validationError = validateInput(body);
         if (validationError) {
             return new Response(
-                JSON.stringify({ error: validationError }), 
+                JSON.stringify({ error: validationError }),
                 { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
@@ -50,7 +50,7 @@ export async function onRequestPost(context) {
 
         if (existingUser) {
             return new Response(
-                JSON.stringify({ error: 'کاربری با این شماره دانشجویی قبلاً ثبت‌نام کرده است.' }), 
+                JSON.stringify({ error: 'کاربری با این شماره دانشجویی قبلاً ثبت‌نام کرده است.' }),
                 { status: 409, headers: { 'Content-Type': 'application/json' } }
             );
         }
@@ -58,19 +58,19 @@ export async function onRequestPost(context) {
         const hashedPassword = await hashPassword(password);
 
         await env.notica_db
-            .prepare('INSERT INTO users (full_name, student_id, password, phone_number) VALUES (?, ?, ?, ?)')
-            .bind(fullName, studentId, hashedPassword, phoneNumber || null)
+            .prepare('INSERT INTO users (full_name, student_id, password, phone_number, subscription_type) VALUES (?, ?, ?, ?, ?)')
+            .bind(fullName, studentId, hashedPassword, phoneNumber || null, 'free')
             .run();
 
         return new Response(
-            JSON.stringify({ message: 'ثبت‌نام با موفقیت انجام شد.' }), 
+            JSON.stringify({ message: 'ثبت‌نام با موفقیت انجام شد.' }),
             { status: 201, headers: { 'Content-Type': 'application/json' } }
         );
 
     } catch (error) {
         console.error('Signup Error:', error);
         return new Response(
-            JSON.stringify({ error: 'خطای داخلی سرور هنگام ثبت‌نام رخ داد.', details: error.message }), 
+            JSON.stringify({ error: 'خطای داخلی سرور هنگام ثبت‌نام رخ داد.', details: error.message }),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }

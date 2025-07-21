@@ -8,6 +8,7 @@ import LoginPage from './components/LoginPage.jsx';
 import SignupPage from './components/SignupPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import GuestRoute from './components/GuestRoute.jsx';
+import PayPage from './components/PayPage.jsx';
 import './style.css';
 
 const NotFoundPage = lazy(() => import('./components/NotFoundPage.jsx'));

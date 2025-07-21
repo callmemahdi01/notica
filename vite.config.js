@@ -23,14 +23,14 @@ export default defineConfig({
           },
           {
             urlPattern: ({ url }) => {
-              return url.hostname === 'callmemahdi01.github.io' || url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com';
+              return url.hostname === 'callmemahdi01.github.io' || url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || url.hostname === 'payment.ryzencloud910.workers.dev' || url.hostname === 'cdn.tailwindcss.com';
             },
             handler: 'CacheFirst',
             options: {
               cacheName: 'cdn-assets-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 1 Year
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 day
               },
               cacheableResponse: {
                 statuses: [0, 200],

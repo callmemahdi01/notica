@@ -16,6 +16,13 @@ function getTokenFromCookie(cookieHeader) {
 
 export async function onRequestGet(context) {
   const { request, env, params } = context;
+  
+  const referer = request.headers.get("Referer") || "";
+  const allowedReferers = ["https://notica.pages.dev", "http://127.0.0.1", "localhost"];
+  if (!allowedReferers.some(allowed => referer.includes(allowed))) {
+    return new Response("Access denied: must be embedded in site", { status: 403 });
+  }
+
   const token = getTokenFromCookie(request.headers.get("Cookie"));
 
   if (!token) {

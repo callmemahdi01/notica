@@ -13,7 +13,7 @@ import SignupPage from './components/SignupPage.jsx';
 const NotFoundPage = lazy(() => import('./components/NotFoundPage.jsx'))
 
 const withSuspense = (element) => (
-  <Suspense fallback={<div>در حال بارگذاری...</div>}>
+  <Suspense fallback={<div>loading ...</div>}>
     {element}
   </Suspense>
 )

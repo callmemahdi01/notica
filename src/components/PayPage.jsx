@@ -43,7 +43,7 @@ function PayPage() {
 
   if (showPaymentFrame) {
     return (
-      <div className="flex justify-center items-center min-h-screen fixed inset-0 z-50 login-container">
+      <div className="flex justify-center items-center min-h-screen fixed inset-0 z-50 auth-container">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden w-full max-w-lg relative">
             <iframe
                 src={paymentUrl}
@@ -64,8 +64,8 @@ function PayPage() {
   }
 
   return (
-    <div className="login-container flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="login-form bg-white shadow-md rounded-xl p-8 max-w-xl w-full text-right">
+    <div className="auth-container flex justify-center items-center min-h-screen bg-gray-100 px-4">
+      <div className="auth-form bg-white shadow-md rounded-xl p-8 max-w-xl w-full text-right">
         <h2 className="text-2xl font-bold text-center mb-6">ارتقا به اشتراک حرفه‌ای نوتیکا</h2>
         <p className="text-slate-700 text-base leading-7 mb-5">
           با ارتقای حساب کاربری خود به نسخه حرفه‌ای، به تمام جزوات و قابلیت‌های نوتیکا بدون هیچ محدودیتی دسترسی خواهید داشت.

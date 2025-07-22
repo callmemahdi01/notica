@@ -1,43 +1,50 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+
+const STORAGE_KEYS = {
+  COURSE_ID: 'lastCourseId',
+  NOTE_PATH: 'lastNotePath'
+};
 
 function App() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [courses, setCourses] = useState([]);
-  const [selectedCourseId, setSelectedCourseId] = useState(
-    () => localStorage.getItem('lastCourseId') || null
+  const [selectedCourseId, setSelectedCourseId] = useState(() => 
+    localStorage.getItem(STORAGE_KEYS.COURSE_ID) || null
   );
-  const [selectedNotePath, setSelectedNotePath] = useState(
-    () => localStorage.getItem('lastNotePath') || ''
+  const [selectedNotePath, setSelectedNotePath] = useState(() => 
+    localStorage.getItem(STORAGE_KEYS.NOTE_PATH) || ''
   );
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isIframeLoading, setIframeLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const iframeContainerRef = useRef(null);
 
+  const hasPremiumAccess = useMemo(() => user?.subscription === 'pro', [user?.subscription]);
+
   useEffect(() => {
-    fetch('/courses.json?' + Date.now())
-      .then(response => response.json())
+    fetch(`/courses.json?${Date.now()}`)
+      .then(res => res.json())
       .then(setCourses)
-      .catch(error => console.error('Error fetching courses:', error));
+      .catch(console.error);
+
+    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   useEffect(() => {
-    if (selectedCourseId) {
-      localStorage.setItem('lastCourseId', selectedCourseId);
-    } else {
-      localStorage.removeItem('lastCourseId');
-    }
+    selectedCourseId 
+      ? localStorage.setItem(STORAGE_KEYS.COURSE_ID, selectedCourseId)
+      : localStorage.removeItem(STORAGE_KEYS.COURSE_ID);
   }, [selectedCourseId]);
 
   useEffect(() => {
-    if (selectedNotePath) {
-      localStorage.setItem('lastNotePath', selectedNotePath);
-    } else {
-      localStorage.removeItem('lastNotePath');
-    }
+    selectedNotePath
+      ? localStorage.setItem(STORAGE_KEYS.NOTE_PATH, selectedNotePath)
+      : localStorage.removeItem(STORAGE_KEYS.NOTE_PATH);
   }, [selectedNotePath]);
 
   const handleCourseClick = useCallback((courseId) => {
@@ -46,9 +53,9 @@ function App() {
     if (!newCourseId) setSelectedNotePath('');
   }, [selectedCourseId]);
 
-  const checkNoteAccess = useCallback((course, note) => {
-    return course.isFree || note.free || user?.subscription === 'pro';
-  }, [user?.subscription]);
+  const checkNoteAccess = useCallback((course, note) => 
+    course.isFree || note.free || hasPremiumAccess
+  , [hasPremiumAccess]);
 
   const handleNoteClick = useCallback((courseId, noteId, course, note) => {
     if (!checkNoteAccess(course, note)) {
@@ -70,21 +77,13 @@ function App() {
     navigate('/login');
   }, [logout, navigate]);
 
-  const toggleFrameFullscreen = useCallback(() => {
+  const toggleFullscreen = useCallback(() => {
     const container = iframeContainerRef.current;
     if (!container) return;
     
-    if (!document.fullscreenElement) {
-      container.requestFullscreen().catch(err => console.error(err.message));
-    } else {
-      document.exitFullscreen();
-    }
-  }, []);
-
-  useEffect(() => {
-    const onFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+    document.fullscreenElement 
+      ? document.exitFullscreen()
+      : container.requestFullscreen().catch(console.error);
   }, []);
 
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
@@ -97,46 +96,32 @@ function App() {
     );
   }
 
-  const hasPremiumAccess = user?.subscription === 'pro';
-
   return (
     <div className="main-layout">
       <div className={`overlay ${isSidebarOpen ? 'open' : ''}`} onClick={closeSidebar} />
       
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <button className="sidebar-close-button" onClick={closeSidebar}>
-          &times;
-        </button>
+        <button className="sidebar-close-button" onClick={closeSidebar}>×</button>
         
         <div className="sidebar-header">
           <h1>نوتیکا</h1>
         </div>
         
-        <div className="flex flex-wrap justify-between items-center gap-3 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg p-3">
+        <div className="flex flex-wrap items-center justify-around gap-1 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg py-3 px-1">
           <h3 className="text-lg md:text-xl font-semibold text-gray-800">{user.name}</h3>
           {user.studentId && <p className="text-sm text-gray-500">{user.studentId}</p>}
           {hasPremiumAccess ? (
-        <span 
-          className="text-xs cursor-default" 
-          title="اشتراک فعال"
-        >
-          {user.subscription}
-        </span>
-      ) : (
-        <Link 
-          to="/pay" 
-          className="text-xs hover:underline" 
-          title="برای دسترسی اشتراک خریداری کنید"
-        >
-          {user.subscription || 'free'}
-        </Link>
-      )}
-
+            <span className="text-xs cursor-default" title="اشتراک فعال">
+              {user.subscription}
+            </span>
+          ) : (
+            <Link to="/pay" className="text-xs hover:underline" title="برای دسترسی اشتراک خریداری کنید">
+              {user.subscription || 'free'}
+            </Link>
+          )}
         </div>
         
-        <button onClick={handleLogout} className="logout-button">
-          خروج از حساب
-        </button>
+        <button onClick={handleLogout} className="logout-button">خروج از حساب</button>
         
         <h2 className="course-list-title">لیست دروس</h2>
         
@@ -175,9 +160,7 @@ function App() {
       </div>
 
       <div className="content">
-        <button className="sidebar-open-button" onClick={() => setSidebarOpen(true)}>
-          &#9776;
-        </button>
+        <button className="sidebar-open-button" onClick={() => setSidebarOpen(true)}>☰</button>
         
         <div className="iframe-container" ref={iframeContainerRef}>
           {isIframeLoading && selectedNotePath && (
@@ -188,11 +171,7 @@ function App() {
           
           {selectedNotePath ? (
             <>
-              <button 
-                className="fullscreen-btn" 
-                onClick={toggleFrameFullscreen} 
-                title="تمام صفحه"
-              >
+              <button className="fullscreen-btn" onClick={toggleFullscreen} title="تمام صفحه">
                 <span className="material-icons">
                   {isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
                 </span>

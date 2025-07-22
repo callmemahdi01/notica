@@ -115,13 +115,23 @@ function App() {
         <div className="flex flex-wrap justify-between items-center gap-3 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg p-3">
           <h3 className="text-lg md:text-xl font-semibold text-gray-800">{user.name}</h3>
           {user.studentId && <p className="text-sm text-gray-500">{user.studentId}</p>}
-          <Link 
-            to="/pay" 
-            className="text-xs" 
-            title={!hasPremiumAccess ? 'برای دسترسی اشتراک خریداری کنید' : ''}
-          >
-            {user.subscription || 'free'}
-          </Link>
+          {hasPremiumAccess ? (
+        <span 
+          className="text-xs cursor-default" 
+          title="اشتراک فعال"
+        >
+          {user.subscription}
+        </span>
+      ) : (
+        <Link 
+          to="/pay" 
+          className="text-xs hover:underline" 
+          title="برای دسترسی اشتراک خریداری کنید"
+        >
+          {user.subscription || 'free'}
+        </Link>
+      )}
+
         </div>
         
         <button onClick={handleLogout} className="logout-button">

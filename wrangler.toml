@@ -1,12 +1,12 @@
 # wrangler.toml
-name = "notica"
+name = "beta-notica"
 pages_build_output_dir = "dist"
 compatibility_date = "2024-03-20"
 
 [[d1_databases]]
 binding = "notica_db"
-database_name = "notica_db"
-database_id = "0d2107fc-5a5d-4db8-a211-8c0704268cd4"
+database_name = "beta_notica_db"
+database_id = "0858a8ce-7f45-4073-89c5-faa02f526a54"
 
 [vars]
 JWT_SECRET = "IKjCzrpU2mdrRs53nNg2vOrr818JrY6G"

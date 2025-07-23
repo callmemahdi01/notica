@@ -53,7 +53,7 @@ function PayPage() {
             />
             <button 
                 onClick={() => setShowPaymentFrame(false)}
-                className="absolute top-2 right-2 bg-gray-700 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold hover:bg-red-600 transition-colors"
+                className="absolute top-2 right-2 bg-gray-700 text-white rounded-lg w-8 h-8 flex items-center justify-center text-xl font-bold hover:bg-red-600 transition-colors"
                 aria-label="بستن پنجره پرداخت"
             >
                 &times;

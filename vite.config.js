@@ -36,7 +36,7 @@ export default defineConfig({
       manifest: {
         name: 'Notica',
         short_name: 'Notica',
-        description: 'اپلیکیشن مدیریت دانشجویی نوتیکا',
+        description: 'اپلیکیشن دانشجویی نوتیکا',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',

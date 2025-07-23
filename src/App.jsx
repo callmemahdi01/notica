@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import PrintComponent from './components/PrintComponent';
 
 const STORAGE_KEYS = {
   COURSE_ID: 'lastCourseId',
@@ -11,16 +12,17 @@ function App() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [courses, setCourses] = useState([]);
-  const [selectedCourseId, setSelectedCourseId] = useState(() => 
+  const [selectedCourseId, setSelectedCourseId] = useState(() =>
     localStorage.getItem(STORAGE_KEYS.COURSE_ID) || null
   );
-  const [selectedNotePath, setSelectedNotePath] = useState(() => 
+  const [selectedNotePath, setSelectedNotePath] = useState(() =>
     localStorage.getItem(STORAGE_KEYS.NOTE_PATH) || ''
   );
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isIframeLoading, setIframeLoading] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const iframeContainerRef = useRef(null);
+  const iframeRef = useRef(null);
 
   const hasPremiumAccess = useMemo(() => user?.subscription === 'pro', [user?.subscription]);
 
@@ -36,7 +38,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    selectedCourseId 
+    selectedCourseId
       ? localStorage.setItem(STORAGE_KEYS.COURSE_ID, selectedCourseId)
       : localStorage.removeItem(STORAGE_KEYS.COURSE_ID);
   }, [selectedCourseId]);
@@ -53,7 +55,7 @@ function App() {
     if (!newCourseId) setSelectedNotePath('');
   }, [selectedCourseId]);
 
-  const checkNoteAccess = useCallback((course, note) => 
+  const checkNoteAccess = useCallback((course, note) =>
     course.isFree || note.free || hasPremiumAccess
   , [hasPremiumAccess]);
 
@@ -148,8 +150,14 @@ function App() {
                       title={!hasAccess ? 'برای دسترسی اشتراک خریداری کنید' : ''}
                     >
                       <span>{note.title}</span>
-                      {note.free && !hasPremiumAccess && <span className="free-badge">رایگان</span>}
-                      {!hasAccess && <span className="lock-icon">🔒</span>}
+                      {hasPremiumAccess ? (
+                        isActive && <PrintComponent iframeRef={iframeRef} studentId={user.studentId} />
+                      ) : (
+                        <>
+                          {note.free && <span className="free-badge">رایگان</span>}
+                          {!hasAccess && <span className="lock-icon">🔒</span>}
+                        </>
+                      )}
                     </li>
                   );
                 })}
@@ -178,6 +186,7 @@ function App() {
               </button>
               
               <iframe
+                ref={iframeRef}
                 src={selectedNotePath}
                 title="Note Viewer"
                 className="note-iframe"

@@ -49,7 +49,7 @@ function PayPage() {
                 src={paymentUrl}
                 title="درگاه پرداخت"
                 className="w-full h-[700px] border-0"
-                allow="payment"
+                allow="payment; clipboard-write"
             />
             <button 
                 onClick={() => setShowPaymentFrame(false)}

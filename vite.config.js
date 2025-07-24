@@ -137,7 +137,7 @@ export default defineConfig({
         moduleSideEffects: false,
       },
     },
-    reportCompressedSize: false,
+    reportCompressedSize: true,
     chunkSizeWarningLimit: 1000,
   },
   server: {

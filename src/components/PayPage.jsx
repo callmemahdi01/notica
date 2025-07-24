@@ -64,8 +64,8 @@ function PayPage() {
   }
 
   return (
-    <div className="auth-container flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="auth-form bg-white shadow-md rounded-xl p-8 max-w-xl w-full text-right">
+    <div className="auth-container">
+      <div className="auth-form max-w-xl text-right p-8">
         <h2 className="text-2xl font-bold text-center mb-6">ارتقا به اشتراک حرفه‌ای نوتیکا</h2>
         <p className="text-slate-700 text-base leading-7 mb-5">
           با ارتقای حساب کاربری خود به نسخه حرفه‌ای، به تمام جزوات و قابلیت‌های نوتیکا بدون هیچ محدودیتی دسترسی خواهید داشت.
@@ -78,15 +78,14 @@ function PayPage() {
         <div className="flex flex-col gap-3">
           <button
             onClick={handleUpgradeClick}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg text-lg font-medium transition-all duration-200"
           >
             ارتقا به حساب حرفه‌ای
           </button>
           <Link
             to="/"
-            className="bg-white text-blue-600 border border-blue-600 hover:bg-blue-50 py-3 px-6 rounded-lg text-lg font-medium text-center transition-all duration-200"
+            className="text-blue-600 border border-blue-600 hover:bg-blue-200 py-3 px-6 rounded-xl text-center transition-all duration-200"
           >
-            برگشت به صفحه اصلی
+            ↩ بازگشت
           </Link>
         </div>
       </div>

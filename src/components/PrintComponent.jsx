@@ -138,7 +138,7 @@ const PrintComponent = ({ iframeRef, studentId }) => {
     <div className="z-[1000] p-0.5 rounded-lg flex gap-2.5 items-center">
       <button
         onClick={printIframeWithoutMediaPrint}
-        className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-[#007bff] text-white rounded text-xs cursor-pointer"
+        className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-blue-600 hovor:bg-blue-700 text-white rounded text-xs cursor-pointer"
       >
         دانلود
       </button>

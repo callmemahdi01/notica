@@ -8,35 +8,67 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
+        cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         navigateFallbackDenylist: [/^\/notes\//],
         runtimeCaching: [
           {
-            urlPattern: ({ url }) => {
-              return url.hostname === 'callmemahdi01.github.io' ||
-                     url.hostname === 'fonts.googleapis.com' ||
-                     url.hostname === 'fonts.gstatic.com' ||
-                     url.hostname === 'payment.ryzencloud910.workers.dev' ||
-                     url.hostname === 'cdn.tailwindcss.com';
-            },
+            urlPattern: ({ url }) =>
+              url.hostname === 'callmemahdi01.github.io' ||
+              url.hostname === 'payment.ryzencloud910.workers.dev' ||
+              url.pathname.endsWith('.png') ||
+              url.pathname.endsWith('.woff2') ||
+              url.pathname.endsWith('.svg'),
             handler: 'CacheFirst',
             options: {
-              cacheName: 'cdn-assets-cache',
+              cacheName: 'static-assets-cache',
               expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 7 روز
+                maxEntries: 50, //was 100 entries
+                maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
+                statuses: [0, 200]
+              }
+            }
           },
-        ],
+          {
+            urlPattern: ({ url }) =>
+              url.hostname === 'fonts.googleapis.com' ||
+              url.hostname === 'fonts.gstatic.com' ||
+              url.hostname === 'cdn.tailwindcss.com',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'external-assets-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 365
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.endsWith('.css'),
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'styles-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 7
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          }
+        ]
       },
       manifest: {
         name: 'Notica',
         short_name: 'Notica',
         description: 'اپلیکیشن دانشجویی نوتیکا',
+        version: '1.0.4',
         theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
@@ -46,10 +78,10 @@ export default defineConfig({
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
-        ],
-      },
-    }),
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+        ]
+      }
+    })
   ],
   build: {
     rollupOptions: {
@@ -66,12 +98,12 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://notica.pages.dev',
-        changeOrigin: true,
+        changeOrigin: true
       },
       '/notes': {
         target: 'https://notica.pages.dev',
-        changeOrigin: true,
-      },
-    },
-  },
+        changeOrigin: true
+      }
+    }
+  }
 });

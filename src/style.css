@@ -645,12 +645,13 @@ body {
 }
 
 .overlay {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(30,41,59,0.6);
+  background: rgba(30, 41, 59, 0.6);
   z-index: 999;
-  transition: opacity 0.3s var(--transition);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
   will-change: opacity;
 }
 
@@ -668,8 +669,9 @@ body {
     margin: 16px;
     border-radius: var(--radius);
   }
-  .overlay.open {
-    display: block;
+    .overlay.open {
+    opacity: 1;
+    pointer-events: auto;
   }
   .auth-form h2 {
     font-size: 1.875rem;

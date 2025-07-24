@@ -65,7 +65,7 @@ function PayPage() {
 
   return (
     <div className="auth-container">
-      <div className="auth-form max-w-xl text-right p-8">
+      <div className="auth-form max-w-xl text-right ">
         <h2 className="text-2xl font-bold text-center mb-6">ارتقا به اشتراک حرفه‌ای نوتیکا</h2>
         <p className="text-slate-700 text-base leading-7 mb-5">
           با ارتقای حساب کاربری خود به نسخه حرفه‌ای، به تمام جزوات و قابلیت‌های نوتیکا بدون هیچ محدودیتی دسترسی خواهید داشت.

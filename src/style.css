@@ -99,7 +99,7 @@ body {
 
 .auth-form {
   background: var(--surface-elevated);
-  padding: 48px;
+  padding: 2rem;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   text-align: center;
@@ -702,8 +702,12 @@ body {
 }
 
 @media (max-width: 640px) {
+  .auth-container{
+    padding: 0 10px;
+  }
   .auth-form {
-    padding: 24px;
+    padding: 1rem;
+    margin: 0;
   }
   .sidebar {
     width: 100%;

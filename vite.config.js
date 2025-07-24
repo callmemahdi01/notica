@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-const CACHE_VERSION = '1.0.1';
+const CACHE_VERSION = '1.0.2';
 const CACHE_PREFIX = 'notica';
 const CACHE_NAMES = {
   STATIC: `${CACHE_PREFIX}-static-${CACHE_VERSION}`,

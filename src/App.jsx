@@ -110,7 +110,7 @@ function App() {
         </div>
         
         <div className="flex flex-wrap items-center justify-around gap-1 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg py-3 px-1">
-          <h3 className="text-lg md:text-xl font-semibold text-gray-800">{user.name}</h3>
+          <div className="text-lg md:text-xl font-semibold text-gray-800">{user.name}</div>
           {user.studentId && <p className="text-sm text-gray-500">{user.studentId}</p>}
           {hasPremiumAccess ? (
             <span className="text-xs cursor-default" title="اشتراک فعال">

@@ -34,7 +34,7 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
   --text-light: #94a3b8;
-  --danger: #ef4444;
+  --danger: #e00000;
   --success: #10b981;
   --radius: 16px;
   --radius-sm: 8px;
@@ -320,12 +320,12 @@ body {
 }
 
 .course-list-item h3 {
-  padding: 16px 10px;
+  padding: 10px 10px;
   margin: 8px 10px;
   border-radius: var(--radius);
   border-right: 2px solid var(--primary-light);
   cursor: pointer;
-  font: 600 1.125rem var(--font-family);
+  font: 600 1.1rem var(--font-family);
   background: var(--surface);
   color: var(--text);
   position: sticky;
@@ -366,6 +366,7 @@ body {
   color: white !important;
   box-shadow: var(--shadow-md);
   border-color: var(--primary-hover);
+  font: 600 1.125rem var(--font-family);
 }
 
 .course-list-item h3.active::before {

@@ -122,10 +122,10 @@ function App() {
         <button className="sidebar-close-button" onClick={closeSidebar}>×</button>
         
         <div className="sidebar-header">
-          <h1>نوتیکا</h1>
+          <h1>نوتیکا 🎓</h1>
         </div>
         
-        <div className="flex flex-wrap items-center justify-around gap-1 text-center mb-5 border-t border-b border-l-4 border-r-4 border-blue-300 rounded-lg py-3 px-1">
+        <div className="flex flex-wrap items-center justify-around gap-1 text-center mb-5 rounded-lg py-3 px-1 mx-1 border-r-4 border-l-4 border-y border-blue-300 shadow bg-gray-50">
           <div className="text-lg md:text-xl font-semibold text-gray-800">{user.name}</div>
           {user.studentId && <p className="text-sm text-gray-500">{user.studentId}</p>}
           {hasPremiumAccess ? (
@@ -138,20 +138,18 @@ function App() {
             </Link>
           )}
         </div>
-        
         <button onClick={handleLogout} className="logout-button">خروج از حساب</button>
-        
-        <h2 className="course-list-title">لیست دروس</h2>
+        {/* <h2 className="course-list-title p-1 mx-3 px-2 bg-gray-50">📚 لـیـسـت درس‌هـا</h2> */}
         
         <ul className="course-list">
           {courses.map((course) => (
             <li key={course.id} className={`course-list-item ${selectedCourseId === course.id ? 'open' : ''}`}>
-              <h3 
+              <div
                 onClick={() => handleCourseClick(course.id)} 
-                className={selectedCourseId === course.id ? 'active' : ''}
+                className={selectedCourseId === course.id ? 'active' : 'shadow'}
               >
                 {course.name}
-              </h3>
+              </div>
               
               <ul className="note-list">
                 {course.notes.map((note) => {

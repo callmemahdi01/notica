@@ -59,10 +59,6 @@ body {
   direction: rtl;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 *::-webkit-scrollbar {
@@ -76,6 +72,7 @@ body {
 *::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 4px;
+  transition: background-color 0.2s ease-out;
 }
 
 *::-webkit-scrollbar-thumb:hover {
@@ -129,7 +126,7 @@ body {
   font: inherit;
   background: var(--surface);
   color: var(--text);
-  transition: all 0.3s var(--transition);
+  transition: transform 0.3s var(--transition), border-color 0.3s var(--transition), box-shadow 0.3s var(--transition);
   will-change: transform, border-color, box-shadow;
 }
 
@@ -159,7 +156,7 @@ body {
   box-shadow: var(--shadow-sm);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s var(--transition);
+  transition: transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
   will-change: transform, box-shadow;
 }
 
@@ -261,31 +258,17 @@ body {
   position: relative;
   margin-bottom: 1rem;
   padding-bottom: 0.1rem;
-  flex-shrink: 0;
-}
-
-.sidebar-header::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  right: -2.3rem;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--primary), var(--medical-accent));
-  border-radius: 2px;
 }
 
 .sidebar-header h1 {
+  text-align: center;
   font-size: 1.75rem;
   font-weight: 900;
-  text-align: right;
   margin: 0.4rem 0.6rem 0.5rem 0;
   letter-spacing: -0.015em;
   line-height: 1.4;
   direction: rtl;
   display: block;
-  
   background: linear-gradient(
     105deg,
     var(--primary) 30%,
@@ -296,9 +279,9 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  
-  animation: shimmer-text 5.2s linear infinite;
+  animation: shimmer-text 4.2s linear infinite;
   will-change: background-position;
+  border-bottom: 1px solid #d8d8d8;
 }
 
 @keyframes shimmer-text {
@@ -325,20 +308,11 @@ body {
   margin: 0 10px;
   border-radius: 10px;
   border-bottom: 2px solid var(--primary-light);
-  font: 700 1.25rem var(--font-family);
+  font: 700 1rem var(--font-family);
   color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
 }
 
-.course-list-title::before {
-  content: '📚';
-  font-size: 1.125rem;
-}
-
-.course-list-item h3 {
+.course-list-item div {
   padding: 10px 10px;
   margin: 8px 10px;
   border-radius: var(--radius);
@@ -350,13 +324,13 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
-  transition: all 0.3s var(--transition);
-  will-change: transform, background, border-color;
+  transition: background 0.3s var(--transition), border-color 0.3s var(--transition), color 0.3s var(--transition), transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
+  will-change: transform, background, border-color, color, box-shadow;
   user-select: none;
-  overflow: auto;
+  overflow: auto
 }
 
-.course-list-item h3::before {
+.course-list-item div::before {
   content: '';
   position: absolute;
   top: 0;
@@ -369,18 +343,18 @@ body {
   will-change: transform;
 }
 
-.course-list-item h3:hover {
+.course-list-item div:hover {
   background: var(--primary-light);
   border-color: var(--primary);
   transform: translate3d(-4px, 0, 0);
   box-shadow: var(--shadow-sm);
 }
 
-.course-list-item h3:hover::before {
+.course-list-item div3:hover::before {
   transform: scale3d(1, 1, 1);
 }
 
-.course-list-item h3.active {
+.course-list-item div.active {
   background: linear-gradient(135deg, var(--primary), var(--primary-hover));
   color: white !important;
   box-shadow: var(--shadow-md);
@@ -388,7 +362,7 @@ body {
   font: 600 1.125rem var(--font-family);
 }
 
-.course-list-item h3.active::before {
+.course-list-item div.active::before {
   background: white;
   transform: scale3d(1, 1, 1);
 }
@@ -420,8 +394,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: all 0.3s var(--transition);
-  will-change: transform, background, color, border-color;
+  transition: background 0.3s var(--transition), color 0.3s var(--transition), border-color 0.3s var(--transition), transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
+  will-change: transform, background, color, border-color, box-shadow;
   user-select: none;
 }
 
@@ -447,6 +421,7 @@ body {
 }
 
 .note-list li.active-note {
+  position: sticky;
   background: var(--medical-light);
   color: var(--medical-accent);
   font-weight: 600;
@@ -500,12 +475,11 @@ body {
   cursor: pointer;
   font: 600 14px var(--font-family);
   box-shadow: var(--shadow-sm);
-  transition: all 0.3s var(--transition);
-  will-change: transform, border-color, box-shadow;
+  transition: transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
+  will-change: transform, box-shadow;
 }
 
 .logout-button:hover {
-  border-color: var(--danger);
   transform: translate3d(0, -2px, 0);
   box-shadow: var(--shadow-md);
 }
@@ -571,7 +545,7 @@ body {
   justify-content: center;
   z-index: 20;
   box-shadow: var(--shadow-md);
-  transition: all 0.3s var(--transition);
+  transition: background 0.3s var(--transition), transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
   will-change: transform, background, box-shadow;
 }
 
@@ -642,7 +616,7 @@ body {
   box-shadow: var(--shadow-md);
   align-items: center;
   justify-content: center;
-  transition: all 0.3s var(--transition);
+  transition: background 0.3s var(--transition), color 0.3s var(--transition), transform 0.3s var(--transition), box-shadow 0.3s var(--transition);
   will-change: transform, background, color, box-shadow;
 }
 
@@ -722,8 +696,8 @@ body {
     height: calc(100vh - 96px);
   }
   .fullscreen-btn {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
   }
 }
 

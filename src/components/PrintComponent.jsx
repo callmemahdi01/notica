@@ -135,14 +135,12 @@ const PrintComponent = ({ iframeRef, studentId }) => {
   }, [iframeRef, studentId]);
 
   return (
-    <div className="z-[1000] p-0.5 rounded-lg flex gap-2.5 items-center">
       <button
         onClick={printIframeWithoutMediaPrint}
         className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs cursor-pointer transition-colors duration-200 ease-in-out"
       >
         دانلود
       </button>
-    </div>
   );
 };
 

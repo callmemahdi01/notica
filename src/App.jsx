@@ -98,6 +98,22 @@ function App() {
     );
   }
 
+  const FullscreenIcon = ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+        d="M8 3H5a2 2 0 00-2 2v3m13-5h3a2 2 0 012 2v3M3 16v3a2 2 0 002 2h3m13-5v3a2 2 0 01-2 2h-3" />
+    </svg>
+  );
+
+  const FullscreenExitIcon = ({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3" transform="rotate(180 5.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16 3h3a2 2 0 0 1 2 2v3" transform="rotate(180 18.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3" transform="rotate(180 5.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M21 16v3a2 2 0 0 1-2 2h-3" transform="rotate(180 18.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
   return (
     <div className="main-layout">
       <div className={`overlay ${isSidebarOpen ? 'open' : ''}`} onClick={closeSidebar} />
@@ -180,11 +196,9 @@ function App() {
           {selectedNotePath ? (
             <>
               <button className="fullscreen-btn" onClick={toggleFullscreen} title="تمام صفحه">
-                <span className="material-icons">
-                  {isFullscreen ? 'fullscreen_exit' : 'fullscreen'}
-                </span>
+                {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
               </button>
-              
+
               <iframe
                 ref={iframeRef}
                 src={selectedNotePath}

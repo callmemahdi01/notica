@@ -74,7 +74,6 @@ function App() {
   }, [checkNoteAccess, navigate, selectedNotePath]);
 
   const handleLogout = useCallback(async () => {
-    localStorage.clear();
     await logout();
     navigate('/login');
   }, [logout, navigate]);

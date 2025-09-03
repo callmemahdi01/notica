@@ -22,7 +22,7 @@ function LoginPage() {
       })
       if (res.ok) {
         login()
-        navigate('/')
+        navigate('/app')
       } else {
         const data = await res.json().catch(() => ({ error: 'خطای ناشناخته' }))
         alert(data.error)

@@ -1,6 +1,12 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NotFoundPage = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="auth-container">
       <div className="auth-form max-w-xl">
@@ -12,11 +18,9 @@ const NotFoundPage = () => {
             <h2 className="mt-4 text-3xl font-bold text-gray-800">صفحه مورد نظرت پیدا نشد!</h2>
           </div>
           <p className="text-lg text-gray-600">چیزی که دنبالشی اصلا وجود نداره.</p>
-          <a href="/">
-            <button className="mt-6">
-              ↩ بازگشت
-            </button>
-          </a>
+          <button onClick={handleGoBack} className="mt-6">
+            ↩ بازگشت
+          </button>
         </div>
       </div>
     </div>

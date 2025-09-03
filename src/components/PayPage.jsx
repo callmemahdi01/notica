@@ -19,7 +19,7 @@ function PayPage() {
       if (event.data === 'paymentSuccess') {
         setShowPaymentFrame(false);
         alert('پرداخت شما با موفقیت ثبت شد. پس از تایید مدیر، اشتراک شما فعال خواهد شد.');
-        navigate('/');
+        navigate('/app');
       }
     };
 
@@ -82,7 +82,7 @@ function PayPage() {
             ارتقا به حساب حرفه‌ای
           </button>
           <Link
-            to="/"
+            to="/app"
             className="text-blue-600 border border-blue-600 hover:bg-blue-200 py-3 px-6 rounded-xl text-center transition-all duration-200"
           >
             ↩ بازگشت

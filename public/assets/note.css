@@ -1,0 +1,193 @@
+body.annotation-active {
+    user-select: none;
+}
+
+#highlightCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    pointer-events: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+canvas {
+    transform: translateZ(0);
+    will-change: transform;
+    pointer-events: none !important;
+}
+body.annotation-active canvas {
+    pointer-events: auto !important;
+}
+
+body.annotation-active .container {
+    pointer-events: none;
+}
+body.annotation-active {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#highlightCanvas,
+#noteCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+#highlightCanvas {
+    pointer-events: none;
+}
+
+body.annotation-active #noteCanvas {
+    pointer-events: auto;
+}
+
+#masterAnnotationToggleBtn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+    padding: 15px 67px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#masterAnnotationToggleBtn:hover {
+    background-color: #0056b3;
+}
+
+#masterAnnotationToggleBtn.active {
+    background-color: #c82333;
+}
+
+#masterAnnotationToggleBtn.active:hover {
+    background-color: #a11c29;
+}
+
+#annotationToolsPanel {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    z-index: 10000;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tool-button {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+    width: 36px;
+    height: 36px;
+}
+
+.tool-button:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.tool-button.active {
+    background-color: #16a085;
+    border-color: #128a71;
+}
+
+.tool-button.active svg {
+    fill: white;
+}
+
+.tool-button svg {
+    width: 22px;
+    height: 22px;
+    fill: #343a40;
+}
+
+#annotationToolsPanel input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 36px;
+    height: 36px;
+    border: none;
+    padding: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+#annotationToolsPanel input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#annotationToolsPanel input[type="color"]::-webkit-color-swatch {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.line-width-slider-container {
+    display: flex;
+    align-items: center;
+    cursor: ew-resize;
+    padding: 0 8px;
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    user-select: none;
+    height: 36px;
+    box-sizing: border-box;
+}
+
+.line-width-value-display {
+    font-weight: 600;
+    text-align: center;
+    min-width: 24px;
+    color: #343a40;
+}
+
+#clearAnnotationsBtn {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#clearAnnotationsBtn:hover {
+    background-color: #f1b0b7;
+}

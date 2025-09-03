@@ -139,7 +139,6 @@ function App() {
           )}
         </div>
         <button onClick={handleLogout} className="logout-button">خروج از حساب</button>
-        {/* <h2 className="course-list-title p-1 mx-3 px-2 bg-gray-50">📚 لـیـسـت درس‌هـا</h2> */}
         
         <ul className="course-list">
           {courses.map((course) => (

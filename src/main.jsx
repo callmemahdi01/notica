@@ -11,6 +11,7 @@ import GuestRoute from './components/GuestRoute.jsx'
 import './style.css'
 import PayPage from './components/PayPage.jsx';
 import SignupPage from './components/SignupPage.jsx';
+import Site from './components/Site.jsx';
 
 const NotFoundPage = lazy(() => import('./components/NotFoundPage.jsx'))
 
@@ -23,6 +24,10 @@ const withSuspense = (element) => (
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Site />
+  },
+  {
+    path: '/app',
     element: <ProtectedRoute><App /></ProtectedRoute>
   },
   {
@@ -39,7 +44,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <ProtectedRoute>{withSuspense(<NotFoundPage />)}</ProtectedRoute>
+    element: <NotFoundPage />
   }
 ])
 

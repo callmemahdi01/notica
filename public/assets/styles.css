@@ -1,0 +1,332 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    direction: rtl;
+    font-size: 0.95rem;
+}
+h1, h2, h3, h4 ,h5, h6, p, li,ul,td,th, .note, strong { position: relative; z-index: 100; }
+.container {
+    width: 80%;
+    max-width: 1200px; 
+    margin: 25px auto;
+    padding: 35px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+
+header {
+    text-align: center;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #4CAF50; 
+    margin-bottom: 35px;
+}
+
+header h1 {
+    color: #2c3e50; 
+    font-size: 2.6em;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 1.15em;
+    color: #555;
+    margin-top: 0;
+}
+
+
+h2 {
+    color: #16a085; 
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 12px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+h3 {
+    color: #2980b9; 
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 1.7em;
+    font-weight: 600;
+}
+
+h4 {
+    color: #34495e; 
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+p, li {
+    font-size: 1.1em;
+    text-align: justify;
+    color: #34495e; 
+    margin-bottom: 1em;
+}
+
+ul, ol {
+    padding-right: 25px; 
+    margin-bottom: 1em;
+}
+
+li {
+    margin-bottom: 0.6em; 
+}
+
+strong {
+    color: #c0392b; 
+    font-weight: 600;
+}
+
+.highlight { 
+    background-color: rgba(255, 255, 0, 0.4);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+
+.note, .definition, .important-questions, .pep-guideline {
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    border-right-width: 5px;
+    border-right-style: solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.note {
+    background-color: #00b7901a;
+    border-right-color: #1abc9c; 
+}
+
+.definition {
+    background-color: #fef9e7; 
+    border-right-color: #f39c12; 
+}
+
+.important-questions {
+    background-color: #fff0f0; 
+    border-right-color: #e74c3c; 
+}
+.important-questions p:first-child { 
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #c0392b;
+}
+
+.pep-guideline { 
+    background-color: rgba(255, 158, 151, 0.2);
+    border-right-color: #fadbd8;
+    border: 1px solid #fadbd8; 
+    border-right-width: 5px; 
+}
+
+.references { 
+    background-color: #b6b6b62b;
+    border-right-color: #6c757d;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    border-right-width: 5px;
+    border-right-style: solid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.references ul {
+    list-style-type: none;
+    padding-right: 0;
+}
+.references li {
+    background-color: #88898a27;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+.disease-block {
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+.disease-block h3 { 
+    margin-top: 0;
+    color: #2c3e50; 
+    font-size: 1.6em; 
+    border-bottom: 1px dashed #bdc3c7;
+    padding-bottom: 10px;
+}
+.disease-block:nth-child(odd) {
+    background-color: #e9f7ff; 
+}
+.disease-block:nth-child(even) {
+    background-color: #e6ffe6; 
+}
+
+.table-responsive-wrapper { 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+    border: 1px solid #ddd; 
+    border-radius: 6px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0; 
+}
+th, td {
+    border: 1px solid #e0e0e0;
+    padding: 14px 12px;
+    text-align: right;
+    vertical-align: top; 
+}
+th {
+    background-color: #00af06ae;
+    color: white;
+    font-weight: 600;
+    font-size: 1.05em;
+}
+tr:nth-child(even) {
+    background-color: #f8f9fa; 
+}
+tr:hover {
+    background-color: #e9ecef; 
+}
+
+
+footer {
+    text-align: center;
+    padding: 25px 0;
+    margin-top: 40px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 0.9em;
+    color: #6c757d; 
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px 0;
+        margin: 15px auto;
+    }
+
+    header h1 {
+        font-size: 2.1em;
+    }
+    header p {
+        font-size: 1.05em;
+    }
+
+    h2 {
+        font-size: 1.7em;
+        margin-top: 35px;
+    }
+    h3 { 
+        font-size: 1.45em;
+        margin-top: 30px;
+    }
+    .disease-block h3 { 
+        font-size: 1.4em;
+    }
+    h4 {
+        font-size: 1.25em;
+        margin-top: 25px;
+    }
+    p, li {
+        font-size: 1em;
+        line-height: 1.75;
+    }
+    ul, ol {
+        padding-right: 20px;
+    }
+
+    .nav-button {
+        padding: 10px 15px;
+        font-size: 0.95em;
+    }
+
+    .note, .definition, .important-questions, .pep-guideline, .references, .disease-block {
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    table {
+        font-size: 0.95em;
+    }
+    th, td {
+        padding: 10px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 93%;
+        padding: 25px 0;
+        margin: 0 10px;
+        border-radius: 0; 
+        box-shadow: none;
+    }
+    header {
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    header p {
+        font-size: 1em;
+    }
+    h2 {
+        font-size: 1.5em;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+    h3 { 
+        font-size: 1.3em;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+    .disease-block h3 { 
+        font-size: 1.25em;
+    }
+    h4 {
+        font-size: 1.15em;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    p, li {
+        font-size: 0.95em;
+        line-height: 1.7;
+    }
+    .nav-button {
+        font-size: 0.9em;
+        padding: 9px 12px;
+        margin: 3px 4px;
+    }
+    .note, .definition, .important-questions, .pep-guideline, .references, .disease-block {
+        padding: 12px;
+        margin: 15px 0;
+    }
+    th, td {
+        padding: 8px 5px;
+        font-size: 0.9em;
+    }
+    .references li {
+        font-size: 0.9em;
+        padding: 8px;
+    }
+}

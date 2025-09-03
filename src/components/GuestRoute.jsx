@@ -11,7 +11,7 @@ function GuestRoute({ children }) {
     return <div>در حال بارگذاری...</div>;
   }
 
-  return isAuthenticated ? <Navigate to="/" replace /> : children;
+  return isAuthenticated ? <Navigate to="/app" replace /> : children;
 }
 
 export default GuestRoute;

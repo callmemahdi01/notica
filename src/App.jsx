@@ -26,16 +26,64 @@ function App() {
 
   const hasPremiumAccess = useMemo(() => user?.subscription === 'pro', [user?.subscription]);
 
+  const isCurrentlyFullscreen = useCallback(() => {
+    return !!(
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    );
+  }, []);
+
+  const requestFullscreen = useCallback((element) => {
+    if (element.requestFullscreen) {
+      return element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      return element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      return element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+      return element.msRequestFullscreen();
+    }
+    return Promise.reject(new Error('Fullscreen not supported'));
+  }, []);
+
+  const exitFullscreen = useCallback(() => {
+    if (document.exitFullscreen) {
+      return document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      return document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      return document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      return document.msExitFullscreen();
+    }
+    return Promise.reject(new Error('Exit fullscreen not supported'));
+  }, []);
+
+  const handleFullscreenChange = useCallback(() => {
+    const isCurrentlyFS = isCurrentlyFullscreen();
+    setIsFullscreen(isCurrentlyFS);
+  }, [isCurrentlyFullscreen]);
+
   useEffect(() => {
     fetch(`/courses.json?${Date.now()}`)
       .then(res => res.json())
       .then(setCourses)
       .catch(console.error);
 
-    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, [handleFullscreenChange]);
 
   useEffect(() => {
     selectedCourseId
@@ -78,14 +126,20 @@ function App() {
     navigate('/login');
   }, [logout, navigate]);
 
-  const toggleFullscreen = useCallback(() => {
+  const toggleFullscreen = useCallback(async () => {
     const container = iframeContainerRef.current;
     if (!container) return;
-    
-    document.fullscreenElement 
-      ? document.exitFullscreen()
-      : container.requestFullscreen().catch(console.error);
-  }, []);
+
+    try {
+      if (isCurrentlyFullscreen()) {
+        await exitFullscreen();
+      } else {
+        await requestFullscreen(container);
+      }
+    } catch (error) {
+      console.error('Fullscreen error:', error);
+    }
+  }, [isCurrentlyFullscreen, exitFullscreen, requestFullscreen]);
 
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 

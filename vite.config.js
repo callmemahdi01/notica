@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-const CACHE_VERSION = '1.0.5';
+const CACHE_VERSION = '1.0.6';
 const CACHE_PREFIX = 'notica';
 const CACHE_NAMES = {
   STATIC: `${CACHE_PREFIX}-static-${CACHE_VERSION}`,
@@ -91,12 +91,12 @@ export default defineConfig({
         name: 'Notica',
         short_name: 'Notica',
         description: 'اپلیکیشن دانشجویی نوتیکا',
-        theme_color: '#3B82F6',
+        theme_color: '#ffffff',
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/',
         start_url: '/app',
-        orientation: 'portrait-primary',
+        orientation: 'any',
         lang: 'fa-IR',
         dir: 'rtl',
         categories: ['education', 'productivity'],

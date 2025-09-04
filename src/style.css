@@ -257,7 +257,7 @@ body {
 .sidebar-header {
   text-align: center;
   position: relative;
-  margin-bottom: 1rem;
+  margin-bottom: 0.1rem;
   padding-bottom: 0.1rem;
 }
 

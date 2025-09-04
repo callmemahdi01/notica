@@ -1082,7 +1082,6 @@ class AnnotationApp {
                 this.#normalizeLoadedDrawingsProperties();
             } catch {
                 this.#drawings = [];
-                localStorage.removeItem(this.#storageKey);
             }
         } else this.#drawings = [];
         this.#rebuildQuadtree();

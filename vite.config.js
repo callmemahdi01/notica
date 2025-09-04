@@ -14,9 +14,11 @@ const CACHE_NAMES = {
 };
 
 export default defineConfig({
+  base: '/',
   esbuild: {
     legalComments: 'none',
     treeShaking: true,
+    sourcemap: true,
   },
   plugins: [
     react(),
@@ -26,7 +28,8 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
-        navigateFallbackDenylist: [/^\/notes\//, /^\/api\//],
+        navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/api\//, /^\/notes\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\/.*/i,
@@ -88,19 +91,61 @@ export default defineConfig({
         name: 'Notica',
         short_name: 'Notica',
         description: 'اپلیکیشن دانشجویی نوتیکا',
-        theme_color: '#ffffff',
+        theme_color: '#3B82F6',
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/',
-        start_url: '/',
-        orientation: 'portrait',
+        start_url: '/app',
+        orientation: 'portrait-primary',
         lang: 'fa-IR',
+        dir: 'rtl',
+        categories: ['education', 'productivity'],
         icons: [
-          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+          {
+            src: 'pwa-64x64.png',
+            sizes: '64x64',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
+          }
         ],
+        shortcuts: [
+          {
+            name: 'اپلیکیشن اصلی',
+            short_name: 'اپ',
+            description: 'باز کردن اپلیکیشن اصلی نوتیکا',
+            url: '/app',
+            icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }]
+          }
+        ],
+        edge_side_panel: {
+          preferred_width: 480
+        }
       },
+      devOptions: {
+        enabled: true,
+        type: 'module'
+      }
     }),
   ],
   build: {

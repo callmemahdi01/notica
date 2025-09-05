@@ -49,7 +49,7 @@ const MouseGlow = memo(() => {
 });
 
 const Navigation = ({ isVisible, onNavigate }) => (
-  <nav className="sticky top-4 z-40 mx-auto max-w-5xl rounded-full border border-white/30 bg-white/60 p-2 shadow-lg backdrop-blur">
+  <nav className="sticky top-4 z-40 mx-auto max-w-5xl rounded-full border border-white/30 bg-white/60 p-2 shadow-lg backdrop-blur-sm">
     <div className="mx-auto flex items-center justify-between px-6 py-3">
       <div className={`transition-all duration-700 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0'}`}>
         <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-2xl font-bold text-transparent">نوتیکا 🎓</h1>

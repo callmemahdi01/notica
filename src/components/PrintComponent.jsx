@@ -1,8 +1,52 @@
 // src/components/PrintComponent.jsx
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const PrintComponent = ({ iframeRef, studentId }) => {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isPWAInstalled, setIsPWAInstalled] = useState(false);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallPrompt(true);
+    };
+
+    const handleAppInstalled = () => {
+      setIsPWAInstalled(true);
+      setDeferredPrompt(null);
+      setShowInstallPrompt(false);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    // بررسی اولیه اگر PWA قبلاً نصب شده باشد
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                        window.navigator.standalone || 
+                        document.referrer.includes('android-app://');
+    
+    setIsPWAInstalled(isStandalone);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  const handleInstallPWA = useCallback(async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setIsPWAInstalled(true);
+        setDeferredPrompt(null);
+        setShowInstallPrompt(false);
+      }
+    }
+  }, [deferredPrompt]);
 
   const printIframeWithoutMediaPrint = useCallback(() => {
     if (!iframeRef?.current || !studentId?.trim()) {
@@ -136,13 +180,114 @@ const PrintComponent = ({ iframeRef, studentId }) => {
     }
   }, [iframeRef, studentId]);
 
+  const handleDownloadClick = useCallback(() => {
+    if (!isPWAInstalled && showInstallPrompt && deferredPrompt) {
+      // نمایش modal برای نصب PWA
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+      `;
+      
+      modal.innerHTML = `
+        <div style="
+          background: white;
+          padding: 20px;
+          border-radius: 10px;
+          text-align: center;
+          max-width: 300px;
+          width: 90%;
+        ">
+          <h3 style="margin-top: 0;">نصب اپلیکیشن</h3>
+          <p>برای استفاده از قابلیت دانلود، لطفاً اپلیکیشن نوتیکا را نصب کنید.</p>
+          <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+            <button id="install-btn" style="
+              background: #4CAF50;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 5px;
+              cursor: pointer;
+            ">نصب</button>
+            <button id="cancel-btn" style="
+              background: #f44336;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 5px;
+              cursor: pointer;
+            ">انصراف</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      modal.querySelector('#install-btn').addEventListener('click', () => {
+        handleInstallPWA();
+        document.body.removeChild(modal);
+      });
+      
+      modal.querySelector('#cancel-btn').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+    } else if (!isPWAInstalled && !showInstallPrompt) {
+      // اگر PWA قابل نصب نباشد ولی همچنان نصب نشده باشد
+      alert('برای استفاده از قابلیت دانلود، لطفاً اپلیکیشن نوتیکا را نصب کنید.');
+    } else {
+      // اگر PWA نصب شده باشد یا کاربر انتخاب کند بدون نصب ادامه دهد
+      printIframeWithoutMediaPrint();
+    }
+  }, [isPWAInstalled, showInstallPrompt, deferredPrompt, handleInstallPWA, printIframeWithoutMediaPrint]);
+
+  // اگر PWA نصب نشده باشد و قابل نصب باشد، دکمه نصب را نمایش بده
+  if (!isPWAInstalled && showInstallPrompt) {
+    return (
+      <div style={{ position: 'relative' }}>
+        <button
+          onClick={handleDownloadClick}
+          className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs cursor-pointer transition-colors duration-200 ease-in-out"
+        >
+          دانلود
+        </button>
+        <button
+          onClick={handleInstallPWA}
+          style={{
+            position: 'absolute',
+            top: '0.45rem',
+            left: 'calc(0.3rem + 60px)', // کنار دکمه دانلود
+            padding: '4px 8px',
+            background: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            fontSize: '10px',
+            cursor: 'pointer',
+            zIndex: 1000
+          }}
+          title="نصب اپلیکیشن"
+        >
+          نصب
+        </button>
+      </div>
+    );
+  }
+
   return (
-      <button
-        onClick={printIframeWithoutMediaPrint}
-        className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs cursor-pointer transition-colors duration-200 ease-in-out"
-      >
-        دانلود
-      </button>
+    <button
+      onClick={handleDownloadClick}
+      className="absolute top-[0.45rem] left-[0.3rem] sm:top-[0.4rem] py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs cursor-pointer transition-colors duration-200 ease-in-out"
+    >
+      دانلود
+    </button>
   );
 };
 

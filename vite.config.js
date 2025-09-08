@@ -4,13 +4,14 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
-const CACHE_VERSION = '1.0.7';
+const CACHE_VERSION = '1.0.10';
 const CACHE_PREFIX = 'notica';
 const CACHE_NAMES = {
   STATIC: `${CACHE_PREFIX}-static-${CACHE_VERSION}`,
   API: `${CACHE_PREFIX}-api-${CACHE_VERSION}`,
   FONTS: `${CACHE_PREFIX}-fonts-${CACHE_VERSION}`,
   ASSETS: `${CACHE_PREFIX}-assets-${CACHE_VERSION}`,
+  COMPONENTS: `${CACHE_PREFIX}-components-${CACHE_VERSION}`,
 };
 
 export default defineConfig({
@@ -18,7 +19,7 @@ export default defineConfig({
   esbuild: {
     legalComments: 'none',
     treeShaking: true,
-    sourcemap: true,
+    sourcemap: false,
   },
   plugins: [
     react(),
@@ -68,10 +69,19 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:js|css)$/i,
+            urlPattern: /\.(?:js|jsx|css)$/i,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: CACHE_NAMES.ASSETS,
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: ({ url }) => url.pathname.includes('/components/') || url.pathname.includes('SplashScreen'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: CACHE_NAMES.COMPONENTS,
+              expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 7 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
@@ -143,7 +153,7 @@ export default defineConfig({
         }
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
         type: 'module'
       }
     }),
@@ -156,7 +166,7 @@ export default defineConfig({
         drop_console: true,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.warn'],
-        passes: 2,
+        // حذف passes برای سرعت بیشتر
       },
       mangle: {
         toplevel: true,
@@ -164,16 +174,15 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons';
-            }
-            return 'vendor';
-          }
+        manualChunks: {
+          // بهینه‌سازی code splitting
+          'react': ['react', 'react-dom', 'react-router-dom'],
+          'auth': ['./src/contexts/AuthContext.jsx'],
+          'splash': ['./src/components/SplashScreen.jsx'],
+          'print': ['./src/components/PrintComponent.jsx'],
+          'routes': ['./src/components/LoginPage.jsx', './src/components/SignupPage.jsx', './src/components/PayPage.jsx'],
+          'layout': ['./src/components/ProtectedRoute.jsx', './src/components/GuestRoute.jsx', './src/components/Site.jsx'],
+          'main': ['./src/App.jsx', './src/main.jsx']
         },
         chunkFileNames: 'assets/[name].[hash].js',
         entryFileNames: 'assets/[name].[hash].js',

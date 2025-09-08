@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
@@ -66,11 +68,15 @@ function App() {
     setIsFullscreen(isCurrentlyFS);
   }, [isCurrentlyFullscreen]);
 
-  useEffect(() => {
+  const fetchCourses = useCallback(() => {
     fetch(`/courses.json?${Date.now()}`)
       .then(res => res.json())
       .then(setCourses)
       .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    fetchCourses();
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
@@ -83,18 +89,22 @@ function App() {
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
-  }, [handleFullscreenChange]);
+  }, [handleFullscreenChange, fetchCourses]);
 
   useEffect(() => {
-    selectedCourseId
-      ? localStorage.setItem(STORAGE_KEYS.COURSE_ID, selectedCourseId)
-      : localStorage.removeItem(STORAGE_KEYS.COURSE_ID);
+    if (selectedCourseId) {
+      localStorage.setItem(STORAGE_KEYS.COURSE_ID, selectedCourseId);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.COURSE_ID);
+    }
   }, [selectedCourseId]);
 
   useEffect(() => {
-    selectedNotePath
-      ? localStorage.setItem(STORAGE_KEYS.NOTE_PATH, selectedNotePath)
-      : localStorage.removeItem(STORAGE_KEYS.NOTE_PATH);
+    if (selectedNotePath) {
+      localStorage.setItem(STORAGE_KEYS.NOTE_PATH, selectedNotePath);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.NOTE_PATH);
+    }
   }, [selectedNotePath]);
 
   const handleCourseClick = useCallback((courseId) => {
@@ -143,6 +153,22 @@ function App() {
 
   const closeSidebar = useCallback(() => setSidebarOpen(false), []);
 
+  const FullscreenIcon = useCallback(({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+        d="M8 3H5a2 2 0 00-2 2v3m13-5h3a2 2 0 012 2v3M3 16v3a2 2 0 002 2h3m13-5v3a2 2 0 01-2 2h-3" />
+    </svg>
+  ), []);
+
+  const FullscreenExitIcon = useCallback(({ className = "w-6 h-6" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3" transform="rotate(180 5.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16 3h3a2 2 0 0 1 2 2v3" transform="rotate(180 18.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3" transform="rotate(180 5.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M21 16v3a2 2 0 0 1-2 2h-3" transform="rotate(180 18.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ), []);
+
   if (!user) {
     return (
       <div className="main-layout">
@@ -150,22 +176,6 @@ function App() {
       </div>
     );
   }
-
-  const FullscreenIcon = ({ className = "w-6 h-6" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-        d="M8 3H5a2 2 0 00-2 2v3m13-5h3a2 2 0 012 2v3M3 16v3a2 2 0 002 2h3m13-5v3a2 2 0 01-2 2h-3" />
-    </svg>
-  );
-
-  const FullscreenExitIcon = ({ className = "w-6 h-6" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M8 3H5a2 2 0 0 0-2 2v3" transform="rotate(180 5.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M16 3h3a2 2 0 0 1 2 2v3" transform="rotate(180 18.5 5.5)" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 16v3a2 2 0 0 0 2 2h3" transform="rotate(180 5.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M21 16v3a2 2 0 0 1-2 2h-3" transform="rotate(180 18.5 18.5)" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
 
   return (
     <div className="main-layout">

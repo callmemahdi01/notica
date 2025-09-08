@@ -1,3 +1,5 @@
+// src/components/PrintComponent.jsx
+
 import React, { useCallback } from 'react';
 
 const PrintComponent = ({ iframeRef, studentId }) => {

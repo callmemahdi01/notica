@@ -1,6 +1,6 @@
-// authContext.jsx
+// src/contexts/AuthContext.jsx
 
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 
 const AuthContext = createContext(null);
 
@@ -9,9 +9,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = useCallback(async () => {
     try {
-      const response = await fetch('/api/auth', { credentials: 'include' });
+      const response = await fetch('/api/auth', { 
+        credentials: 'include',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
       const data = await response.json();
       if (response.ok && data.isAuthenticated) {
         setIsAuthenticated(true);
@@ -26,21 +31,32 @@ export function AuthProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkAuthStatus();
-  }, []);
+  }, [checkAuthStatus]);
 
-  const login = async () => {
+  const login = useCallback(async () => {
     await checkAuthStatus();
-  };
+  }, [checkAuthStatus]);
 
-  const logout = async () => {
-    await fetch('/api/logout', { method: 'POST', credentials: 'include' });
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+  const logout = useCallback(async () => {
+    try {
+      await fetch('/api/logout', { 
+        method: 'POST', 
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.warn('Logout request failed:', error);
+    } finally {
+      setIsAuthenticated(false);
+      setUser(null);
+    }
+  }, []);
 
   const value = {
     isAuthenticated,
@@ -58,5 +74,9 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }

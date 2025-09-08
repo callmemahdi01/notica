@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+// src/components/PayPage.jsx
+
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from "react-router-dom";
 
@@ -11,26 +13,26 @@ function PayPage() {
 
   const workerUrl = 'https://payment.ryzencloud910.workers.dev';
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      if (event.origin !== workerUrl) {
-        return;
-      }
-      if (event.data === 'paymentSuccess') {
-        setShowPaymentFrame(false);
-        alert('پرداخت شما با موفقیت ثبت شد. پس از تایید مدیر، اشتراک شما فعال خواهد شد.');
-        navigate('/app');
-      }
-    };
+  const handleMessage = useCallback((event) => {
+    if (event.origin !== workerUrl) {
+      return;
+    }
+    if (event.data === 'paymentSuccess') {
+      setShowPaymentFrame(false);
+      alert('پرداخت شما با موفقیت ثبت شد. پس از تایید مدیر، اشتراک شما فعال خواهد شد.');
+      navigate('/app');
+    }
+  }, [navigate, workerUrl]);
 
+  useEffect(() => {
     window.addEventListener('message', handleMessage);
 
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [navigate, workerUrl]);
+  }, [handleMessage]);
 
-  const handleUpgradeClick = () => {
+  const handleUpgradeClick = useCallback(() => {
     if (user && user.studentId) {
       const encodedStudentId = btoa(user.studentId);
       const url = `${workerUrl}/?sid=${encodedStudentId}`;
@@ -39,7 +41,7 @@ function PayPage() {
     } else {
       alert('اطلاعات کاربری برای ارتقا یافت نشد.');
     }
-  };
+  }, [user, workerUrl]);
 
   if (showPaymentFrame) {
     return (
@@ -68,7 +70,7 @@ function PayPage() {
       <div className="auth-form max-w-xl text-right ">
         <h2 className="text-2xl font-bold text-center mb-6">ارتقا به اشتراک حرفه‌ای نوتیکا</h2>
         <p className="text-slate-700 text-base leading-7 mb-5">
-          با ارتقای حساب کاربری خود به نسخه حرفه‌ای، به تمام جزوات و قابلیت‌های نوتیکا بدون هیچ محدودیتی دسترسی خواهید داشت.
+          با ارتقای حساب کاربری خود به نسخه حرفه‌ای، به تمام جزوات و قابلیت‌های نوتیکا بدون هیچ محدودیتی دسترسی خواهید داشت。
         </p>
         <ul className="list-disc pr-5 mb-8 text-slate-700 space-y-2">
           <li>♾️ دسترسی نامحدود به تمام جزوات تمامی دروس</li>

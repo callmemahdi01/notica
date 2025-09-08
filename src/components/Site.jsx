@@ -1,3 +1,5 @@
+// src/components/Site.jsx
+
 import { useState, useEffect, memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +15,7 @@ const FEATURES_DATA = [
 const STATS_DATA = [
   { icon: '📈', title: '98% نرخ موفقیت', description: 'دانشجویان ما نمرات بالاتری کسب می‌کنند' },
   { icon: '⏱️', title: 'صرفه‌جویی 70% زمان', description: 'مطالعه سریع‌تر با محتوای فشرده' },
-  { icon: '👥', title: '+10,000 دانشجو', description: 'جامعه بزرگ دانشجویان موفق' }
+  { icon: '👥', title: '10,000+ دانشجو', description: 'جامعه بزرگ دانشجویان موفق' }
 ];
 
 const MouseGlow = memo(() => {
@@ -201,7 +203,7 @@ const Footer = memo(() => (
   </footer>
 ));
 
-function LandingPage() {
+function Site() {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -229,4 +231,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default Site;
